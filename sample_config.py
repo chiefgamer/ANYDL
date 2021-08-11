@@ -36,7 +36,12 @@ class Config(object):
     PROCESS_MAX_TIMEOUT = 3600
     # watermark file
     DEF_WATER_MARK_FILE = ""
-
+    IS_PUBLIC_BOT = os.environ.get("IS_PUBLIC_BOT", "False")
+    LOGS_CHANNEL = int(os.environ.get("LOGS_CHANNEL", -1234567))
+    TG_MAX_SIZE = 2040108421
+    # Mega User Account
+    MEGA_EMAIL = os.environ.get("MEGA_EMAIL", "")
+    MEGA_PASSWORD = os.environ.get("MEGA_PASSWORD", "")
 
 # Text Prints
 B_START_TEXT = """
