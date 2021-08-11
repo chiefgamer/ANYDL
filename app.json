@@ -43,6 +43,24 @@
       "value": "",
       "required": false
     },
+    "IS_PUBLIC_BOT": {
+      "description": "Set this to 'True' If you want to set Download Function as Public. Default to 'False' !",
+      "required": false,
+      "value": "False"
+    },
+    "LOGS_CHANNEL": {
+      "description": "Make a private channel and forward a message from that channel to @ChannelidHEXbot and Get this. Not Mandatory",
+      "required": false,
+      "value": ""
+    },
+    "MEGA_EMAIL": {
+      "description": "Fill this if you want to use your own Mega Account. This is your Mega account Email!",
+      "required": false
+    },
+    "MEGA_PASSWORD": {
+      "description": "Fill this if you want to use your own Mega Account. This is your Mega account Password!",
+      "required": false
+    },
     "UPDATE_CHANNEL": {
       "description": "For Force Subscribe. Paste your Update channel USERNAME (without @)..",
       "value": "",
