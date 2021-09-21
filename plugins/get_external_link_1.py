@@ -3,18 +3,6 @@
 # (c) Shrimadhav U K
 
 # the logging things
-'''end_one = datetime.now()
-        command_to_exec = [
-        "curl", "https://api.gofile.io/getServer"
-        ]
-        try:
-            logger.info(command_to_exec)
-            t_response = subprocess.check_output(command_to_exec, stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as exc:
-            logger.info("Status : FAIL", exc.returncode, exc.output)
-            server= t_response.split('"')[6]
-            url = f"https://{server}.gofile.io/uploadFile"
-'''
 
 import logging
 logging.basicConfig(level=logging.DEBUG,
@@ -79,19 +67,39 @@ async def get_link(bot, update):
         download_extension = after_download_file_name.rsplit(".", 1)[-1]
         download_file_name_1 = after_download_file_name.rsplit("/",1)[-1]
         download_file_name = download_file_name_1.rsplit(".",1)[0]
-        url= 'https://srv-store5.gofile.io/uploadFile'
         s0ze = os.path.getsize(after_download_file_name)
-        if after_download_file_name is None:
+        '''await bot.edit_message_text(
+            text=Translation.SAVED_RECVD_DOC_FILE,
+            chat_id=update.chat.id,
+            message_id=a.message_id
+        )'''
+        #stick = await bot.send_sticker(chat_id = update.chat.id, reply_to_message_id = a.message_id, "CAACAgIAAxkBAAELnYFhNIkkeemUQ-gAAd56JPvwIHkOu78AAiQLAAIvD_AGcmqdwLNkEucgBA")
+
+        end_one = datetime.now()
+        command_to_exec = [
+        "curl", "https://api.gofile.io/getServer"
+        ]
+        try:
+            logger.info(command_to_exec)
+            t_response = subprocess.check_output(command_to_exec, stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as exc:
+            logger.info("Status : FAIL", exc.returncode, exc.output)
             await bot.edit_message_text(
-                text=Translation.FILE_NOT_FOUND,
                 chat_id=update.chat.id,
+                text=exc.output.decode("UTF-8"),
                 message_id=a.message_id
-        )
+            )
+            return False
         else:
-            end_one = datetime.now()
-            command_to_exec = [
-            "curl",
-            "-F", f"file=@\"{after_download_file_name}\"", url
+            logger.info(t_response)
+            t_response_array = t_response.decode("UTF-8").split("\n")[-1].strip()
+            t_response_ray = t_response_array.split('"')[9]
+            url= f'''https://{t_response_ray}.gofile.io/uploadFile'''
+        
+        end_one = datetime.now()
+        command_to_exec = [
+        "curl",
+        "-F", f"file=@\"{after_download_file_name}\"", url
         ]
         await bot.edit_message_text(
             text=Translation.GO_FILE_UPLOAD,
@@ -106,7 +114,7 @@ async def get_link(bot, update):
             await bot.edit_message_text(
                 chat_id=update.chat.id,
                 text=exc.output.decode("UTF-8"),
-                message_id=up.message_id
+                message_id=a.message_id
             )
             return False
         else:
@@ -114,6 +122,7 @@ async def get_link(bot, update):
             t_response_array = t_response.decode("UTF-8").split("\n")[-1].strip()
             #t_response_ray = re.findall("(?P<url>https?://[^\s]+)", t_response_array)
             t_response_ray = t_response_array.rsplit('"')
+        #await stick.delete()
         await bot.edit_message_text(
             chat_id=update.chat.id,
             text=Translation.AFTER_GET_GOFILE_LINK.format(t_response_ray[29], humanbytes(s0ze), t_response_ray[33], t_response_ray[13]),
@@ -129,9 +138,8 @@ async def get_link(bot, update):
         except:
             pass
     else:
-        await bot.edit_message_text(
+        await bot.send_message(
             chat_id=update.chat.id,
             text=Translation.REPLY_TO_DOC_GET_LINK,
-            message_id=a.message_id
+            reply_to_message_id=update.message_id
         )
-
